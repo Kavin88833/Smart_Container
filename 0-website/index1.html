@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Realtime Database Example</title>
+    <!-- Firebase JavaScript SDK (older version) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyC3A17TtSqJL7bFDRCYcjO_1MnWd7otbT4",
+            authDomain: "smartcontainer-fcd6f.firebaseapp.com",
+            databaseURL: "https://smartcontainer-fcd6f-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "smartcontainer-fcd6f",
+            storageBucket: "smartcontainer-fcd6f.appspot.com",
+            messagingSenderId: "804541284020",
+            appId: "1:804541284020:web:597842092e86ac5c75e1e1"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        // Get a reference to the database service
+        const database = firebase.database();
+
+        // Function to retrieve data from Firebase and continuously update it
+        function fetchData() {
+            const dataRef = database.ref('items/');
+            dataRef.on('value', (snapshot) => {
+                const data = snapshot.val();
+                const displayElement = document.getElementById('display');
+                displayElement.innerHTML = ''; // Clear previous content
+                for (const key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        const item = data[key];
+                        const label = document.createElement('div');
+                        label.innerText = key;
+                        label.style.fontWeight = 'bold';
+                        label.style.marginBottom = '5px';
+                        displayElement.appendChild(label);
+
+                        const value = document.createElement('div');
+                        value.innerText = item;
+                        value.style.textAlign = 'center';
+                        displayElement.appendChild(value);
+
+                        // Add an image (you can replace the src attribute with your image URL)
+                        const image = document.createElement('img');
+                        image.src = 'placeholder.png'; // Replace with your image URL
+                        image.style.display = 'block';
+                        image.style.margin = 'auto';
+                        displayElement.appendChild(image);
+                    }
+                }
+            });
+        }
+    </script>
+</head>
+
+<body onload="fetchData()">
+    <h1>Firebase Realtime Database Example</h1>
+    <div id="display"></div>
+</body>
+
+</html>
