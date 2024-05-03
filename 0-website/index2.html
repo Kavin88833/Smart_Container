@@ -8,6 +8,7 @@
     <!-- Firebase JavaScript SDK (older version) -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <link rel="stylesheet" href="styles.css">
     <script>
         // Initialize Firebase
         const firebaseConfig = {
@@ -45,19 +46,27 @@
                         value.style.textAlign = 'center';
                         displayElement.appendChild(value);
 
-                        // Add an image (you can replace the src attribute with your image URL)
-                        const image = document.createElement('img');
-                        image.src = './temp_img.jpg'; // Replace with your image URL
-                        image.width = 150;
-                        image.height = 150;
-                        image.style.display = 'block';
-                        image.style.margin = 'auto';
-                        displayElement.appendChild(image);
+                        // Create water container with dynamic level
+                        const waterContainer = document.createElement('div');
+                        waterContainer.className = 'water';
+                        const { waterBefore, waterAfter } = calculateWaterLevel(item);
+                        waterContainer.style.setProperty('--water-before', `240%`);
+                        waterContainer.style.setProperty('--water-after', `240%`);
+                        displayElement.appendChild(waterContainer);
                     }
                 }
             });
         }
+
+        // Function to calculate water level based on item value
+        function calculateWaterLevel(value) {
+            // Adjust values as needed
+            const waterBefore = 150 + (value * 0.9); // Range: 150 to 240
+            const waterAfter = waterBefore + 4;
+            return { waterBefore, waterAfter };
+        }
     </script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body onload="fetchData()">
